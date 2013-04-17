@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "algorithm.h"
+#include "iota.h"
 #include "instrumented.h"
 #include "table_util.h"
 
