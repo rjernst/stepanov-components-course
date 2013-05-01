@@ -88,4 +88,11 @@ struct stable_sort_functor
   void operator()(I first, I last) const { std::stable_sort(first, last); }
 };
 
+struct heap_sort_functor
+{
+  template <typename I> 
+  // I is random-access iterator
+  void operator()(I first, I last) const { std::partial_sort(first, last, last); }
+};
+
 #endif
