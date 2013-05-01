@@ -5,7 +5,14 @@ template <typename T>
 // T is Semiregualr or Regular or TotallyOrdered
 struct singleton
 {
+  typedef T value_type;
   T value;
+  // Conversions from T and to T:
+  explicit singleton(const T& x) : value(x) {}
+  explicit operator T() const { return value; }
+  template <typename U>
+  singleton(const singleton<U>& x) : value(x.value) {}
+  // Write conversions from T to singleton<T> and singleton<T> to T.
 
   // Semiregular:
   singleton(const singleton& x) : value(x.value) {} // could be implicitly declared
@@ -22,7 +29,7 @@ struct singleton
   }
   friend
   bool operator!=(const singleton& x, const singleton& y) {
-    return !(x == y);
+     return !(x == y);
   }
   // TotallyOrdered
   friend
@@ -42,9 +49,6 @@ struct singleton
     return !(x < y);
   } 
 
-  // Conversions from T and to T:
-  // Homework - 
-  // Write conversions from T to singleton<T> and singleton<T> to T.
 
 };
 
