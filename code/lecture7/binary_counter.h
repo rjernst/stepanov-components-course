@@ -1,4 +1,34 @@
+// Class implementation. State:
+// - vector for the counter
+// - zero
+// - op
+template <typename T, typename Op>
+class binary_counter
+{
+private:
+  std::vector<T> counter;
+  Op op;
+  T zero;
 
+public:
+  // Constructor. Input arguments: op and zero.
+  binary_counter(const Op& op, const T& zero) :
+    op(op), zero(zero) {
+    counter.reserve(24); 
+  }
+
+  // add
+  void add(T x) {
+    x = add_to_counter(counter.begin(), counter.end(), op, zero, x);
+    if (x != zero) counter.push_back(x);
+  }
+
+  // reduce
+  // returns: value of the counter
+  T reduce() {
+    return reduce_counter(counter.begin(), counter.end(), op, zero);
+  }
+};
 
 template <typename T, typename I, typename Op>
 // requires Op is BinaryOperation(T)

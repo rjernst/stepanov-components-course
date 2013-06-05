@@ -1,8 +1,34 @@
-
 #include <iostream>
 #include "binary_counter.h"
 
-// TODO: implement min_element_binary, using add_to_counter and reduce_counter
+// TODO: implement min_element_binary, using binary_counter
+
+// Need to define MinOp class. Or struct?! Functor. 
+// - compares two iterators and returns the one
+//   pointing to the smallest element
+template <typename Compare>
+class MinOp 
+{
+private:
+  Compare cmp;
+
+public:
+  MinOp(const Compare& cmp) : cmp(cmp) {}
+
+  template <typename I>
+  I operator()(const I& x, const I& y) {
+    return cmp(*y, *x) ? y : x;
+  }
+};
+
+template <typename I, typename Compare>
+// requires I is a ForwardIterator
+// and Compare is a StrictWeakOrdering on ValueType(I)
+I min_element_binary(I first, I last, Compare cmp) {
+  binary_counter<I, MinOp<Compare> > min_counter(MinOp<Compare>(cmp), last);
+  while (first != last) min_counter.add(first++); 
+  return min_counter.reduce();
+}
 
 int main() {
 
