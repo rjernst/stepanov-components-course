@@ -13,6 +13,9 @@ double normalized_by_n(double x, double n) { return x / n; }
 double normalized_by_nlogn(double x, double n) { 
   return x / (n * (log(n) / log(2))); 
 }
+double normalized_by_nlogn1(double x, double n) { 
+  return x / (n * log(n) - n); 
+}
 double dont_normalize(double x, double) { return x; }
 
 template <typename Function>
