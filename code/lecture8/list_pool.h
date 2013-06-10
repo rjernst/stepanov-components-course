@@ -62,24 +62,40 @@ public:
 };
 
 template <typename T, typename N>
-void free_pool_list(list_pool<T, N>& pool,
+void free_list(list_pool<T, N>& pool,
 		    typename list_pool<T, N>::list_type list) {
   while (!pool.is_end(list)) list = pool.free(list);
 }
  
-template <typename T, typename N>
-void print_pool_list(const list_pool<T, N>& pool, 
-		     typename list_pool<T, N>::list_type list) {
+template <typename T, typename N, typename F>
+void for_each_list(const list_pool<T, N>& pool, 
+		     typename list_pool<T, N>::list_type list,
+		     F fun) {
   while (!pool.is_end(list)) {
-    std::cout << *pool.value(list) << " ";
+    f(pool.value(list));
     list = pool.next(list);
   }
-  std::cout << std::endl;
 }
 
+template <typename T, typename N, typename Compare>
+typename list_pool<T, N>::list_type
+min_element_list(const list_pool<T, N>& pool, 
+		 typename list_pool<T, N>::list_type list,
+		 Compare cmp) {
+  if (pool.is_end(list)) return list;
+  typename list_pool<T, N>::list_type current_min = list;
+  list = pool.next(list);
+  while (!pool.is_end(list)) {
+    if (cmp(pool.value(list), pool.value(current_min)))
+      current_min = list;
+    list = pool.next(list);
+  }
+  return current_min;
+}
+      
 template <typename T, typename N>
 typename list_pool<T, N>::index_t 
-reverse_append_pool_list(list_pool<T, N>& pool, 
+reverse_append_list(list_pool<T, N>& pool, 
 			 typename list_pool<T, N>::list_type first,
 			 typename list_pool<T, N>::list_type second) {
   while (!pool.is_end(first)) {
