@@ -29,22 +29,48 @@ private:
     return list_type(pool.size());
   }
 
+  list_type free_list;
+
  public:
-  list_type empty() const {
+  typedef typename std::vector<node_t>::size_type size_type;
+
+  list_type end() const {
     return list_type(0);
   }
 
-  bool is_empty(list_type x) const {
+  bool is_end(list_type x) const {
     return x == empty();
+  }
+
+  bool empty() const { 
+    return pool.empty();
+  }
+
+  size_type size() const {
+    return pool.size();
+  }
+
+  size_type capacity() const {
+    return pool.capacity();
+  }
+
+  void reserve(size_type n) {
+    pool.reserve(n);
   }
 
   list_pool() {
     free_list = empty();
   }
 
+  list_pool(size_type n) {
+    free_list = empty();
+    reserve(n); 
+  }
+
   T& value(list_type x) {
     return node(x).value;
   }
+
   const T& value(list_type x) const {
     return node(x).value;
   }
@@ -65,12 +91,12 @@ private:
 
   list_type allocate(const T& val, list_type tail) {
     list_type list = free_list; 
-    if (is_empty(free_list)) {
+    if (is_end(free_list)) {
       list = new_list();
     } else {
       free_list = next(free_list);
     }
-    value(list) = value; 
+    value(list) = val; 
     next(list) = tail;
     return list; 
   }
@@ -80,12 +106,22 @@ template <typename T, typename N>
 void free_list(list_pool<T, N>& pool, 
 	       typename list_pool<T, N>::list_type x) 
 {
-  while (!pool.is_empty(x)) x = pool.free(x);
+  while (!pool.is_end(x)) x = pool.free(x);
 }
 
-template <typename T, typename N, typename Cmp>
-void min_element_list(list_pool<T, N>& pool, 
-		      typename list_pool<T, N>::list_type x, 
-		      Cmp c) 
-{
+template <typename T, typename N, typename Compare>
+typename list_pool<T, N>::list_type
+min_element_list(const list_pool<T, N>& pool, 
+		 typename list_pool<T, N>::list_type list,
+		 Compare cmp) {
+  if (pool.is_end(list)) return list;
+  typename list_pool<T, N>::list_type current_min = list;
+  list = pool.next(list);
+  while (!pool.is_end(list)) {
+    if (cmp(pool.value(list), pool.value(current_min)))
+      current_min = list;
+    list = pool.next(list);
+  }
+  return current_min;
 }
+
