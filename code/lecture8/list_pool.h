@@ -114,14 +114,6 @@ typename list_pool<T, N>::list_type
 min_element_list(const list_pool<T, N>& pool, 
 		 typename list_pool<T, N>::list_type list,
 		 Compare cmp) {
-  if (pool.is_end(list)) return list;
-  typename list_pool<T, N>::list_type current_min = list;
-  list = pool.next(list);
-  while (!pool.is_end(list)) {
-    if (cmp(pool.value(list), pool.value(current_min)))
-      current_min = list;
-    list = pool.next(list);
-  }
   return current_min;
 }
 
