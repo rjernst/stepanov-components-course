@@ -39,7 +39,7 @@ private:
   }
 
   bool is_end(list_type x) const {
-    return x == empty();
+    return x == end();
   }
 
   bool empty() const { 
@@ -59,11 +59,11 @@ private:
   }
 
   list_pool() {
-    free_list = empty();
+    free_list = end();
   }
 
   list_pool(size_type n) {
-    free_list = empty();
+    free_list = end();
     reserve(n); 
   }
 
