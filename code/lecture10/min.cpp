@@ -16,7 +16,7 @@ public:
   template <typename T>
   bool operator()(const T& x, const T& y) const {
     ++*counter_p;
-    return cmp(x, y);
+    return cmp(x & 7, y & 7);
   }
 };
 
@@ -43,4 +43,5 @@ int main() {
   count_comparisons(vec.begin(), vec.end(), min_element1_2_stable<I>, "min_element1_2_stable");
   count_comparisons(vec.begin(), vec.end(), min_element1_2_stable2<I>, "min_element1_2_stable2");
   count_comparisons(vec.begin(), vec.end(), min_element1_2_practical<I>, "min_element1_2_practical");
+  count_comparisons(vec.begin(), vec.end(), min_element1_2_practical_lecture<I>, "min_element1_2_practical_lecture");
 }

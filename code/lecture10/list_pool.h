@@ -103,7 +103,7 @@ private:
     next(list) = tail;
     return list; 
   }
-// ~list_pool() { std::cout << "pool size: " << size() << std::endl; }
+ ~list_pool() { std::cout << "pool size: " << size() << std::endl; }
 };
 
 template <typename T, typename N>

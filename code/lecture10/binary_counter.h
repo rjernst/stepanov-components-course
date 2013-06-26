@@ -26,7 +26,7 @@ public:
   T reduce() {
     return reduce_counter(counter.begin(), counter.end(), op, zero);
   }
-//~binary_counter() { std::cout << "counter size: " << counter.size() << std::endl; }
+~binary_counter() { std::cout << "counter size: " << counter.size() << std::endl; }
 };
 
 template <typename T, typename I, typename Op>

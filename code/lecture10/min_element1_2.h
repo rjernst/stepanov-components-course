@@ -48,6 +48,31 @@ public:
 template <typename I, typename Compare>
 // requires I is a ForwardIterator
 // and Compare is a StrictWeakOrdering on ValueType(I)
+std::pair<I, I> min_element1_2_practical_lecture(I first, I last, Compare cmp) {
+  if (first == last) return std::make_pair(last, last);
+  I min = first;
+  ++first;
+  if (first == last) return std::make_pair(min, min);
+  I min2 = first;
+  if (cmp(*min2, *min)) std::swap(min, min2);
+  ++first;
+  while (first != last) {
+    if (cmp(*first, *min2)) {
+      if (cmp(*first, *min)) {
+        min2 = min;
+        min = first;
+      } else {
+        min2 = first;
+      }
+    }
+    ++first;
+  }
+  return std::make_pair(min, min2); 
+}
+
+template <typename I, typename Compare>
+// requires I is a ForwardIterator
+// and Compare is a StrictWeakOrdering on ValueType(I)
 std::pair<I, I> min_element1_2(I first, I last, Compare cmp) {
   typedef typename list_pool<I, std::size_t>::list_type list_type;
   typedef compare_dereference<Compare> comp_deref_type;
@@ -69,6 +94,7 @@ std::pair<I, I> min_element1_2(I first, I last, Compare cmp) {
 
 /****************** stable case algorithm 0 ****************************/
 
+
 template <typename Compare>
 class compare_dereference_random_access
 {
@@ -85,6 +111,8 @@ public:
     }
   }
 };
+
+
 
 template <typename I, typename Compare>
 // requires I is a RandomAccessIterator
@@ -115,9 +143,9 @@ template <typename T, typename N>
 inline
 std::pair<T, std::pair<N, N> >
 combine(const std::pair<T, std::pair<N, N> >& x,
-	const std::pair<T, std::pair<N, N> >& y,
-	list_pool<T, N >& pool,
-	bool x_won) {
+        const std::pair<T, std::pair<N, N> >& y,
+        list_pool<T, N >& pool,
+        bool x_won) {
   if (x_won) {
     free_list(pool, y.second.first);
     free_list(pool, y.second.second);
@@ -145,7 +173,7 @@ public:
   op_min1_2_stable(const Compare& cmp, list_pool<T, N>& pool) 
     : cmp(cmp), p(&pool) {}
   argument_type operator()(const argument_type& x, 
-			   const argument_type& y) {
+                           const argument_type& y) {
     return combine(x, y, *p, !cmp(y.first, x.first));
   }
 };
