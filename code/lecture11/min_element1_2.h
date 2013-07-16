@@ -66,7 +66,6 @@ std::pair<I, I> min_element1_2(I first, I last, Compare cmp) {
   while (first != last) counter.add(std::make_pair(first++, pool.empty_queue()));
   typename op_type::argument_type min1_list = counter.reduce();
   I min1 = min1_list.first;
-  //  I min2 = pool.value(min_element_list(pool, min1_list.second.first, cmp_deref));
   I min2 = *std::min_element(iterator(pool, min1_list.second.first), iterator(pool), cmp_deref);
   return std::make_pair(min1, min2);
 }
