@@ -143,25 +143,53 @@ private:
 
   void free(const pair_type& p) { free(p.first, p.second); }
 
-// temporarily include the code to be written in the class
-#include "list_pool_iterator.h"
+  struct iterator {
+    typedef list_pool::value_type value_type;
+    typedef list_pool::list_type difference_type;    
+    typedef std::forward_iterator_tag iterator_category;
+
+    typedef value_type& reference;
+    typedef value_type* pointer; 
+
+    list_pool* pool;
+    list_pool::list_type node;
+
+    iterator() {} // creates a partially formed value
+    iterator(list_pool& p, list_pool::list_type node) :
+      pool(&p), node(node) {}
+    iterator(list_pool& p) : pool(&p), node(p.empty()) {}
+
+    reference operator*() const {
+      return pool->value(node);
+    }
+
+    pointer operator->() const {
+      return &**this;
+    }
+
+    iterator& operator++() {
+      node = pool->next(node);
+      return *this;
+    }
+
+    iterator operator++(int) {
+      iterator tmp(*this);
+      ++*this;
+      return tmp;
+    }
+
+    friend 
+    bool operator==(const iterator& x, const iterator& y) {
+      // assert(x.pool == y.pool);
+      return x.node == y.node;
+    }
+
+    friend
+    bool operator!=(const iterator& x, const iterator& y) {
+      return !(x == y);
+    }
+  };
 };
 
-template <typename T, typename N, typename Compare>
-typename list_pool<T, N>::list_type
-min_element_list(const list_pool<T, N>& pool, 
-		 typename list_pool<T, N>::list_type list,
-		 Compare cmp) {
-  if (pool.is_end(list)) return list;
-  typename list_pool<T, N>::list_type current_min = list;
-  list = pool.next(list);
-  while (!pool.is_end(list)) {
-    if (cmp(pool.value(list), pool.value(current_min))) {
-      current_min = list;
-    }
-    list = pool.next(list);
-  }
-  return current_min;
-}
 
 #endif
