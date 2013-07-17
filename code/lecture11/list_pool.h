@@ -143,6 +143,7 @@ private:
 
   void free(const pair_type& p) { free(p.first, p.second); }
 
+// temporarily include the code to be written in the class
 #include "list_pool_iterator.h"
 };
 
