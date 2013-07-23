@@ -36,16 +36,15 @@ void count_comparisons(I first, I last,
 
 
 int main() {
-  std::vector<int> vec(10);
+  std::vector<int> vec(1000);
   typedef std::vector<int>::iterator I;
   random_iota(vec.begin(), vec.end());
-  print_range(vec.begin(), vec.end());
   list_pool<int> pool;
   list_pool<int>::iterator nil(pool);
   list_pool<int>::iterator list1 = generate_list(vec.begin(), vec.end(), nil);
-  list_pool<int>::iterator list2 = generate_list(vec.begin(), vec.end(), nil);
+  //  list_pool<int>::iterator list2 = generate_list(vec.begin(), vec.end(), nil);
   print_range(list1, nil);
-  print_range(list2, nil);
+  //  print_range(list2, nil);
   list_pool<int>::iterator list = mergesort_linked(list1, nil, std::less<int>());
   print_range(list, nil);
   

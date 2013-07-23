@@ -206,7 +206,13 @@ private:
 
     friend 
     void push_back(iterator& x, const T& value) {
-      x.pool->next(x.node) = x.pool->allocate(value, x.pool->next(x.node));
+      typename list_pool::list_type tmp = x.pool->allocate(value, x.pool->next(x.node));
+      x.pool->next(x.node) = tmp;
+    }
+
+    friend 
+    void free(iterator& x) {
+      x.pool->free(x.node);
     }
   };
 };

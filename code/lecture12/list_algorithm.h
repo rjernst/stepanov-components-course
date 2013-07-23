@@ -1,6 +1,8 @@
 
 #include "binary_counter.h"
 
+#include "merge_linked.h"
+
 template <typename I>
 // requires I is Linked Iterator
 I reverse_concatenate(I first, I last, I tail) {
@@ -40,7 +42,7 @@ struct mergesort_linked_operation
   I nil;
   Compare cmp;
   mergesort_linked_operation(I nil, const Compare& cmp) : nil(nil), cmp(cmp) {}
-  I operator()(I x, I y) { return merge_linked_simple(x, nil, y, nil, cmp); }
+  I operator()(I x, I y) { return merge_linked_non_empty(x, nil, y, nil, cmp).first; }
 };
 
 template <typename I, typename Compare>
