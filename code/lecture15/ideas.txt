@@ -1,0 +1,20 @@
+ideas
+-----
+1. use extra storage when the size is small
+   a. use the extra storage as temp, copying on next merge?
+2. use insertion sort when n < 16? 
+   a. use binary insertion sort? for n less than k
+3. get rid of recursion (using binary counter)
+4. write a very good merge (adaptive)
+5. use rotate_with_buffer in merge_inplace_n left/right
+
+
+requirements
+------------
+1. maintain stability
+2. accepts ForwardIterator
+3. use limited/reasonable extra memory
+4. fast! (good=within 5% of std::stable_sort, 
+          great=faster than std::stable_sort, 
+          optimal=as fast as std::sort)
+5. implement good insertion sort using ForwardIterator
