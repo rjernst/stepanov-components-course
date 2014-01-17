@@ -118,11 +118,16 @@ std::pair<I, I> minmax_element(I first, I last, Compare cmp) {
 */
 
 template <typename I>
+inline
 I successor(I i) {
     I j = i;
     ++j;
     return j;
 }
+
+// Thanks to Wei Chong Tan for pointing out a bug in the code below.
+// (now fixed)
+
 template <typename I, typename Compare>
 // requires I is a ForwardIterator
 // and Compare is a StrictWeakOrdering on ValueType(I)
@@ -131,8 +136,8 @@ std::pair<I, I> minmax_element(I first, I last, Compare cmp) {
     I min_el = first;
     ++first;
     if (first == last) return std::make_pair(min_el, min_el);
-    ++first;
     I max_el = first;
+    ++first;
     if (cmp(*max_el, *min_el)) {
         std::swap(min_el, max_el);
     }
