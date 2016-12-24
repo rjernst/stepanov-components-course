@@ -117,7 +117,7 @@ template <typename I, typename N, typename R>
 // N is Integral
 // R is WeakStrictOrdering on the value type of I
 bool is_sorted_n(I first, N n, R r) {
-  if (n) return true;
+  if (!n) return true;
   I previous = first;
   while (n && !r(*++first, *previous)) {
     previous = first;
