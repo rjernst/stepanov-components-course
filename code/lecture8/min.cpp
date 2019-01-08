@@ -23,7 +23,7 @@ template <typename I, typename Compare>
 // requires I is a ForwardIterator
 // and Compare is a StrictWeakOrdering on ValueType(I)
 I min_element_binary(I first, I last, Compare cmp) {
-  binary_counter<I, min_op<Compare> > min_counter(min_op<Compare>(cmp), last);
+  binary_counter<min_op<Compare>, I> min_counter(min_op<Compare>(cmp), last);
   while (first != last) min_counter.add(first++); 
   return min_counter.reduce();
 }
